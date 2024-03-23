@@ -1,0 +1,2 @@
+create User first_name="frank" email="fababi3@gmail.com" password="kigali" username="frank" last_name="Ngoga"
+create Project title="Codespace"

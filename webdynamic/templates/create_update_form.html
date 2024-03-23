@@ -1,0 +1,33 @@
+{% extends 'main.html' %} 
+{% block content %}
+ <!-- Main Section -->
+ <main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="#"><i class="im im-angle-left"></i></a>
+            <br>
+
+            <form class="form" method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {% for field in form %}
+                {% if field.label.text != 'CSRF Token' %}
+                <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="{{ field.id }}">{{ field.label }}</label>
+                        {{ field(class="input input--text", placeholder=field.label.text) }}
+                        {% if field.errors %}
+                            <ul class="errors">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
