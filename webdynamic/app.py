@@ -2,12 +2,14 @@ from markupsafe import Markup
 from flask import Flask
 import os
 from .views import app_views
-from flask_migrate import Migrate
-
+from flask_login import LoginManager, current_user
+from models import storage
+from models.user import User
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'
+
 
 def linebreaksbr(value):
     """Convert newlines to <br> tags."""
@@ -16,9 +18,23 @@ app.jinja_env.filters['linebreaksbr'] =  linebreaksbr
 
 app.register_blueprint(app_views)
 
-from models.basemodel import Base
-migrate = Migrate(app, Base)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "app_views.login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    '''load user'''
+    print('loading..')
+    user = storage.get(User, user_id)
+    print(user.username)
+    return user
+
+# Context processor to add current_user to template context
+@app.context_processor
+def inject_user():
+    return dict(current_user=current_user)
 
 if __name__ == '__main__':
     host = os.getenv('HOST') if os.getenv('HOST') else '0.0.0.0'

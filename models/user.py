@@ -7,7 +7,7 @@ from .skill import Skill
 from .rate import Rate
 from .comment import Comment
 from .project import Project
-
+from flask_login import UserMixin
 
 
 class Profile(BaseModel, Base):
@@ -35,14 +35,13 @@ class Profile(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
 
-class User(BaseModel, Base):
+class User(BaseModel, Base, UserMixin):
     __tablename__ = 'users'
     username = Column(String(150), nullable=False, unique=True)
     password = Column(String(150), nullable=False)
     email = Column(String(150), nullable=False)
     name = Column(String(150), nullable=False)
     is_staff = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=False)
     projects = relationship('Project', backref='user', cascade="all, delete-orphan")
     profile = relationship("Profile", uselist=False,
                            back_populates="user",

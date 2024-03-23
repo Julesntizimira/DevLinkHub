@@ -3,11 +3,14 @@ from models.user import Profile, Skill
 from models import storage
 from . import app_views
 from forms.user import SkillForm
+from flask_login import login_required, current_user
+
 
 @app_views.route('/add_skill', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def add_skill():
     '''add skill'''
-    profile = storage.get(Profile, 'f9aa840f-26f4-4ded-8fb3-d1829dd1f356')
+    profile = current_user.profile
     form = SkillForm()
     if request.method == 'POST' and form.validate_on_submit:
         name = form.name.data.lower()
@@ -27,9 +30,10 @@ def add_skill():
 
 
 @app_views.route('/update_skill/<skill_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def update_skill(skill_id):
     '''update skill'''
-    profile = storage.get(Profile, 'f9aa840f-26f4-4ded-8fb3-d1829dd1f356')
+    profile = current_user.profile
     skill = storage.get(Skill, skill_id)
     form = SkillForm(obj=skill)
     if request.method == 'POST' and form.validate_on_submit:
@@ -46,6 +50,7 @@ def update_skill(skill_id):
     return render_template('create_update_form.html', form=form)
 
 @app_views.route('/delete_skill/<skill_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def delete_skill(skill_id):
     '''delete skill'''
     skill = storage.get(Skill, skill_id)

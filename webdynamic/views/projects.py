@@ -5,6 +5,7 @@ from models import storage
 from . import app_views
 from forms.project import ProjectForm
 from utils.handleImage import handleImage
+from flask_login import current_user, login_required
 
 project_attr = [
     'title',
@@ -29,6 +30,7 @@ def single_project(id):
         return redirect(url_for('app_views.projects'))
 
 @app_views.route('/create_project', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def create_project():
     '''create_project'''
     projects = [project.to_dict() for project in storage.all(Project).values()]
@@ -40,7 +42,7 @@ def create_project():
                 flash('Project with the same title already exists', 'error')
                 return redirect(url_for('app_views.create_project'))
         data = { k: v for k, v in request.form.items() if k in project_attr}
-        data['user_id'] = 'b0096a30-1dbf-42ad-b985-9f7ad7036fce'
+        data['user_id'] = current_user.id
         new_project = Project(**data)
         new_project.image_url = handleImage(form.image.data, new_project.id)
         new_project.tags = [tag for tag in storage.all(Tag).values() if tag.id in form.tags.data]
@@ -49,6 +51,7 @@ def create_project():
     return render_template('create_update_form.html', form=form)
 
 @app_views.route('/update_project/<project_id>', methods=['GET', 'POST'])
+@login_required
 def update_project(project_id):
     '''update_project'''
     project = storage.get(Project, project_id)
@@ -77,6 +80,7 @@ def update_project(project_id):
 
 
 @app_views.route('/delete_project/<project_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def delete_project(project_id):
     '''delete project'''
     project = storage.get(Project, project_id)

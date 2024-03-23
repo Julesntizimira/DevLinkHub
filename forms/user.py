@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FileField, EmailField
+from wtforms import StringField, TextAreaField, FileField, EmailField, BooleanField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Email, URL, Optional
 
 
@@ -30,3 +30,8 @@ class ProfileForm(FlaskForm):
 class SkillForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description')
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField("Remember Me")

@@ -4,6 +4,7 @@ from models import storage
 from . import app_views
 from forms.user import UserForm, ProfileForm, SkillForm
 from utils.handleImage import handleImage
+from flask_login import current_user, login_required
 
 
 
@@ -54,10 +55,15 @@ def profile(profile_id):
     otherSkills = [skill for skill in profile.skills if not skill.description]
     return render_template('profile.html', profile=profile, skills=skills, otherSkills=otherSkills)
 
+
+
 @app_views.route('/account', methods=['GET'], strict_slashes=False)
+@login_required
 def account():
     '''user account'''
-    profile = storage.get(Profile, 'f9aa840f-26f4-4ded-8fb3-d1829dd1f356')
+    profile = current_user.profile
+    print(profile.name)
+    # profile = storage.get(Profile, 'f9aa840f-26f4-4ded-8fb3-d1829dd1f356')
     return render_template('account.html', profile=profile)
 
 
@@ -80,13 +86,15 @@ def create_profile():
         if form.profile_image.data:
             profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
             profile.save()
-        return redirect(url_for('app_views.profiles'))
+        return redirect(url_for('app_views.login'))
     return render_template('create_update_form.html', form=form)
 
-@app_views.route('/update_profile/<profile_id>', methods=['GET', 'POST'], strict_slashes=False)
-def update_profile(profile_id):
+
+@app_views.route('/update_profile', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
+def update_profile():
     '''update profile'''
-    profile = storage.get(Profile, profile_id)
+    profile = current_user.profile
     form = ProfileForm(obj=profile)
     if request.method == 'POST' and form.validate_on_submit:
         username = form.username.data.lower()
@@ -111,9 +119,10 @@ def update_profile(profile_id):
 
 
 @app_views.route('/delete_profile/<profile_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
 def delete_profile(profile_id):
     '''delete project'''
-    profile = storage.get(Profile, profile_id)
+    profile = current_user.profile
     if request.method == 'POST':
         form = request.form
     return render_template('delete.html')
