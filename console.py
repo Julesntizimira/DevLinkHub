@@ -9,6 +9,12 @@ from models.skill import Skill
 from models.project import Project, Tag
 from models.comment import Comment
 from models.user import User, Profile
+from models.message import Message
+from models.link import Link
+from models.objective import Objective
+from models.takeaway import Takeaway
+from models.subtitle import Subtitle
+
 import shlex  # for splitting the line along spaces except in double quotes
 
 # classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
@@ -21,7 +27,12 @@ classes = {
     'Skill': Skill,
     'Tag': Tag,
     'Project': Project,
-    'Comment': Comment
+    'Comment': Comment,
+    'Message': Message,
+    'Objective': Objective,
+    'Link': Link,
+    'Takeaway': Takeaway,
+    'Subtitle': Subtitle
 }
 
 class HBNBCommand(cmd.Cmd):

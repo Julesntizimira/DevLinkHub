@@ -34,7 +34,9 @@
                 </li>
                 {% endif %}
               </ul>
-              <a href="#" class="btn btn--sub btn--lg">Send Message </a>
+              {% if current_user.is_authenticated and current_user.id != profile.user.id%}
+              <a href="{{url_for('app_views.message', receiver_id=profile.user.id)}}" class="btn btn--sub btn--lg">Send Message </a>
+              {% endif %}
             </div>
           </div>
         </div>

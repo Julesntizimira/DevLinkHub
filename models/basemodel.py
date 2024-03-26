@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
+time = "%B %d, %Y, %I:%M %p"
 
 class Base(DeclarativeBase):
     pass

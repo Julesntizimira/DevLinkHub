@@ -1,0 +1,19 @@
+{% if total_pages > 1 %}
+<div class="pagination">
+    <ul class="container">
+      {% if queryPage > 1 %}
+      <li><a href="{{ url_for('app_views.projects', page=queryPage-1, text=searchQuery )}}" class="btn btn--disabled">&#10094; Prev</a></li>
+      {% endif %}
+      {% for page in custom_range %}
+      {% if page == queryPage %}
+      <li><a href="{{ url_for('app_views.projects', page=page, text=searchQuery)}}" class="btn btn--sub">{{page}}</a></li>
+      {% else %}
+      <li><a href="{{ url_for('app_views.projects', page=page, text=searchQuery)}}" class="btn">{{page}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if queryPage < total_pages %}
+      <li><a href="{{ url_for('app_views.projects', page=queryPage+1, text=searchQuery)}}" class="btn">Next &#10095;</a></li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

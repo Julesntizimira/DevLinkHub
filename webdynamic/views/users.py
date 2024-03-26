@@ -5,7 +5,7 @@ from . import app_views
 from forms.user import UserForm, ProfileForm, SkillForm
 from utils.handleImage import handleImage
 from flask_login import current_user, login_required
-
+from utils.paginate import paginate
 
 
 # urlpatterns = [
@@ -44,8 +44,31 @@ profile_attr = [
 @app_views.route('/profiles', methods=['GET'], strict_slashes=False)
 def profiles():
     '''all profiles'''
-    profiles = storage.all(Profile).values()
-    return render_template('profiles.html', profiles=profiles)
+    profiles = []
+    searchQuery = None
+    if request.args.get('text'):
+        searchQuery = request.args.get('text').lower()
+        for profile in storage.all(Profile).values():
+            if (profile.name and searchQuery in profile.name.lower()) or (profile.bio and searchQuery in profile.bio.lower()):
+                    profiles.append(profile)
+            else:
+                for skill in profile.skills:
+                    if searchQuery in skill.name.lower():
+                        profiles.append(profile)
+                        break
+    else:
+        profiles = list(storage.all(Profile).values())
+    page = int(request.args.get('page', 1))
+    # Number of profiles per page
+    items_on_page, total_pages, custom_range = paginate(profiles, page)
+    context = {
+        'items_on_page': items_on_page,
+        'total_pages': total_pages,
+        'queryPage': page,
+        'custom_range': custom_range,
+        'searchQuery': searchQuery if searchQuery else None
+        }
+    return render_template('profiles.html', **context)
 
 @app_views.route('/profile/<profile_id>', methods=['GET'], strict_slashes=False)
 def profile(profile_id):

@@ -14,6 +14,31 @@
             </span>
             {% endfor %}
           </div>
+          
+        
+          {% if project.links %}
+          <h3 class="singleProject__subtitle">Resources</h3>
+          <br>
+          {% for link in project.links %}
+            <span class="tag tag--pill tag--sub tag--lg">
+              <small><a href="{{link.url}}">{{link.name}}</a></small>
+            </span>
+            {% endfor %}
+            {% endif %}
+            <br>
+            <br>
+            <br>
+            <br>
+          {% if project.takeaways %}
+          <h3 class="singleProject__subtitle">Or in your terminal</h3>
+          <br>
+            {% for takeaway in project.takeaways %}
+              <span class="tag tag--pill tag--sub tag--lg">
+                <small>{{takeaway.text}}</small>
+              </span>
+            {% endfor %}
+          {% endif %}
+          
           {% if project.source_link %}
           <a class="singleProject__liveLink" href="{{project.source_link}}" target="_blank"><i class="im im-external-link"></i>Source Code
           </a>
@@ -27,8 +52,22 @@
           <img class="singleProject__preview" src="{{url_for('static', filename=project.image_url)}}" alt="portfolio thumbnail" />
           <a href="{{url_for('app_views.profile', profile_id=project.user.profile.id)}}" class="singleProject__developer">{{project.user.profile.name}}</a>
           <h2 class="singleProject__title">{{project.title}}</h2>
+          {% if project.description %}
           <h3 class="singleProject__subtitle">About the Project</h3>
+    
           <div class="singleProject__info">{{ project.description | linebreaksbr}}</div>
+          <br>
+          {% endif %}
+          <h3 class="singleProject__subtitle">Learning Objectives</h3>
+          {% if project.objectives %}
+            {% for subtitle in project.subtitles %}
+              <h3 class="singleProject__subtitle">{{subtitle.text}}</h3>
+              {% for objective in subtitle.objectives %}
+              <li>{{objective.text}}</li>
+              {% endfor %}
+              <br>
+            {% endfor %}
+          {% endif %}
 
           <div class="comments">
             <h3 class="singleProject__subtitle">Feedback</h3>

@@ -47,7 +47,7 @@ class User(BaseModel, Base, UserMixin):
                            back_populates="user",
                            cascade="all, delete-orphan",
                            )
-
+    
     def __init__(self, *args, **kwargs):
         """initializes User"""
         super().__init__(*args, **kwargs)

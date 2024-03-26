@@ -8,6 +8,11 @@ from models.rate import Rate
 from models.skill import Skill
 from models.project import Project, Tag
 from models.comment import Comment
+from models.message import Message
+from models.link import Link
+from models.objective import Objective
+from models.takeaway import Takeaway
+from models.subtitle import Subtitle
 
 
 classes = {
@@ -17,7 +22,12 @@ classes = {
     'Skill': Skill,
     'Tag': Tag,
     'Project': Project,
-    'Comment': Comment
+    'Comment': Comment,
+    'message': Message,
+    'Objective': Objective,
+    'Link': Link,
+    'Takeaway': Takeaway,
+    'Subtitle': Subtitle
 }
 
 

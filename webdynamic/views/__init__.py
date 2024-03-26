@@ -7,3 +7,4 @@ from .projects import *
 from .skills import *
 from .comments import *
 from .login_register import *
+from .messages import *

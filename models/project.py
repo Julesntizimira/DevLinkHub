@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, Boolean, Text, ForeignKey, Integer, Table
 from sqlalchemy.orm import relationship
 from .comment import Comment
 from .rate import Rate
+from .objective import Objective
 
 
 project_tag = Table('project_tag', Base.metadata,
@@ -29,6 +30,10 @@ class Project(BaseModel, Base):
     tags = relationship("Tag", secondary=project_tag, viewonly=False)
     comments = relationship("Comment", backref="project", cascade="all, delete-orphan")
     rates = relationship("Rate", backref="project", cascade="all, delete-orphan")
+    links = relationship("Link", backref="project", cascade="all, delete-orphan")
+    objectives = relationship("Objective", backref="project", cascade="all, delete-orphan")
+    takeaways = relationship("Takeaway", backref="project", cascade="all, delete-orphan")
+    subtitles = relationship("Subtitle", backref="project", cascade="all, delete-orphan")
 
     def __init__(self, *args, **kwargs):
         """initializes project"""

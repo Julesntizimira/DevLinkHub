@@ -26,9 +26,7 @@ login_manager.login_view = "app_views.login"
 @login_manager.user_loader
 def load_user(user_id):
     '''load user'''
-    print('loading..')
     user = storage.get(User, user_id)
-    print(user.username)
     return user
 
 # Context processor to add current_user to template context

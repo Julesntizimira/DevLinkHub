@@ -1,11 +1,17 @@
 from flask import make_response, jsonify, request, abort, render_template, flash, redirect, url_for
 from models.user import User, Profile
 from models.project import Project, Tag
+from models.link import Link
+from models.objective import Objective
+from models.takeaway import Takeaway
+from models.subtitle import Subtitle
 from models import storage
 from . import app_views
 from forms.project import ProjectForm
 from utils.handleImage import handleImage
 from flask_login import current_user, login_required
+from utils.paginate import paginate
+from utils.handleProject import update_links, update_subtitles, update_takeaways, create_links, create_subtitle, create_takeaways
 
 project_attr = [
     'title',
@@ -18,8 +24,32 @@ project_attr = [
 @app_views.route('/projects', methods=['GET'], strict_slashes=False)
 def projects():
     '''all projects'''
-    projects = storage.all(Project).values()
-    return render_template('projects.html', projects=projects)
+    projects = []
+    searchQuery = None
+    if request.args.get('text'):
+        searchQuery = request.args.get('text').lower()
+        for project in storage.all(Project).values():
+            if searchQuery in project.title.lower() or (project.description and searchQuery in project.description.lower()):
+                    projects.append(project)
+            else:
+                for tag in project.tags:
+                    if searchQuery in tag.name.lower():
+                        projects.append(project)
+                        break
+    else:
+        projects = list(storage.all(Project).values())
+    page = int(request.args.get('page', 1))
+    # Number of projects per page
+    
+    items_on_page, total_pages, custom_range = paginate(projects, page)
+    context = {
+        'items_on_page': items_on_page,
+        'total_pages': total_pages,
+        'queryPage': page,
+        'custom_range': custom_range,
+        'searchQuery': searchQuery if searchQuery else None
+        }
+    return render_template('projects.html', **context)
 
 @app_views.route('/single_project/<id>', methods=['GET', 'POST'], strict_slashes=False)
 def single_project(id):
@@ -33,12 +63,12 @@ def single_project(id):
 @login_required
 def create_project():
     '''create_project'''
-    projects = [project.to_dict() for project in storage.all(Project).values()]
+    projects = storage.all(Project).values()
     form = ProjectForm()
     form.populate_tags()
     if request.method == 'POST' and form.validate_on_submit:
         for project in projects:
-            if project.get('title') == form.title.data:
+            if project.title == form.title.data:
                 flash('Project with the same title already exists', 'error')
                 return redirect(url_for('app_views.create_project'))
         data = { k: v for k, v in request.form.items() if k in project_attr}
@@ -46,8 +76,14 @@ def create_project():
         new_project = Project(**data)
         new_project.image_url = handleImage(form.image.data, new_project.id)
         new_project.tags = [tag for tag in storage.all(Tag).values() if tag.id in form.tags.data]
+        # create project links
+        create_links(form.links.data, new_project)
+        # create project subtitles and objectives
+        create_subtitle(form.subtitles.data, new_project)
+        # create project takeaways
+        create_takeaways(form.takeaways.data, new_project)
         new_project.save()
-        return redirect(url_for('app_views.projects'))
+        return redirect(url_for('app_views.account'))
     return render_template('create_update_form.html', form=form)
 
 @app_views.route('/update_project/<project_id>', methods=['GET', 'POST'])
@@ -58,24 +94,31 @@ def update_project(project_id):
     if not project:
         flash('Project not found', 'error')
         return redirect(url_for('app_views.projects'))
-
     form = ProjectForm(obj=project)
-    current_tags = project.tags
-    form.populate_tags(current_tags)
+    form.populate_tags(current_tags=project.tags)
     if request.method == 'POST' and form.validate_on_submit():
-        # form.populate_obj(project)
-        if form.image.data:
-            project.image_url = handleImage(form.image.data, project.id)
-        data = { k: v for k, v in request.form.items() if k in project_attr}
-        for attr, val in data.items():
-            setattr(project, attr, val)
-        project.tags = [tag for tag in storage.all(Tag).values() if tag.id in form.tags.data]
-        for tag in project.tags:
-            print(tag)
-        project.save()
-        flash('Project updated successfully', 'success')
-        return redirect(url_for('app_views.projects'))
-    
+        try:
+            data = { k: v for k, v in request.form.items() if k in project_attr}
+            for k, v in data.items():
+                setattr(project, k, v)
+            if form.image.data:
+                project.image_url = handleImage(form.image.data, project.id)
+            # Update project tags
+            project.tags = [tag for tag in storage.all(Tag).values() if tag.id in form.tags.data]
+            # Save changes to the project
+            project.save()
+            # Update project links
+            update_links(form.links.data, project)
+            # Update project objectives
+            update_subtitles(form.subtitles.data, project)
+            # Update project takeaways
+            update_takeaways(form.takeaways.data, project)
+            flash('Project updated successfully', 'success')
+            return redirect(url_for('app_views.projects'))
+        except Exception as e:
+            flash(f'Error updating project: {e}', 'error')
+            # Log the error for debugging purposes
+            print(f'Error updating project: {e}')
     return render_template('create_update_form.html', form=form, project_id=project_id)
 
 
