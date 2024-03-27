@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-'''user and profile model'''
+'''define Project and Tag model'''
 from .basemodel import BaseModel, Base
-from sqlalchemy import Column, String, Boolean, Text, ForeignKey, Integer, Table
+from sqlalchemy import Column, String, Text, ForeignKey, Integer, Table
 from sqlalchemy.orm import relationship
-from .comment import Comment
-from .rate import Rate
-from .objective import Objective
 
 
+# define Project and Tag many to many relationship
 project_tag = Table('project_tag', Base.metadata,
                     Column('project_id', String(60),
                     ForeignKey('projects.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -18,6 +16,7 @@ project_tag = Table('project_tag', Base.metadata,
 
 
 class Project(BaseModel, Base):
+    '''Project Model class'''
     __tablename__ = 'projects'
     user_id = Column(String(60), ForeignKey('users.id'), nullable=True)
     title = Column(String(150), nullable=False)
@@ -36,14 +35,15 @@ class Project(BaseModel, Base):
     subtitles = relationship("Subtitle", backref="project", cascade="all, delete-orphan")
 
     def __init__(self, *args, **kwargs):
-        """initializes project"""
+        """initializes Project instance"""
         super().__init__(*args, **kwargs)
 
 
 class Tag (BaseModel, Base):
+    '''Tag model class'''
     __tablename__ = 'tags'
     name =  Column(String(200), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """initializes Tag"""
+        """initializes Tag instance"""
         super().__init__(*args, **kwargs)

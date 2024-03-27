@@ -11,7 +11,8 @@ from datetime import datetime, timezone, timedelta
 bcrypt = Bcrypt()
 
 
-@app_views.route('/forgot_password', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/forgot_password',
+                 methods=['GET', 'POST'], strict_slashes=False)
 def forgot_password():
     '''forgot password'''
     form = ForgotPasswordForm()
@@ -45,7 +46,8 @@ def forgot_password():
     return render_template('forgot_password.html', form=form)
 
 
-@app_views.route('/reset_token/<user_id>', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/reset_token/<user_id>',
+                 methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(user_id):
     '''user enter reset token'''
     form = EnterResetTokenForm()
@@ -61,7 +63,8 @@ def reset_token(user_id):
             flash('wrong reset token', 'error')
     return render_template('reset_token_form.html', form=form)
 
-@app_views.route('/new_password/<user_id>', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/new_password/<user_id>',
+                 methods=['GET', 'POST'], strict_slashes=False)
 def new_password(user_id):
     '''user enter new password'''
     form = NewPasswordForm()
@@ -72,6 +75,4 @@ def new_password(user_id):
         user.save()
         flash('password reset successfully', 'success')
         return redirect(url_for('app_views.login'))
-    else:
-        flash('error on reseting your password', 'error')
     return render_template('new_password_form.html', form=form)

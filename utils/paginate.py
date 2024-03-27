@@ -2,6 +2,8 @@
 custom pagination function
 '''
 def paginate(data, page):
+    '''handle pagination
+    '''
     per_page = 9
     # Based on page and per_page info, calculate start and end index of items to keep
     start_index = (page - 1) * per_page

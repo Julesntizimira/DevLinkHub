@@ -1,13 +1,16 @@
 from markupsafe import Markup
-from flask import Flask
+from flask import Flask, render_template
 import os
 from .views import app_views
 from flask_login import LoginManager, current_user
 from models import storage
 from models.user import User
 from flask_mail import Mail
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = str(secret_key)
 
@@ -48,6 +51,13 @@ def load_user(user_id):
 @app.context_processor
 def inject_user():
     return dict(current_user=current_user)
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    '''not found page'''
+    return render_template('notfound.html')
+
 
 if __name__ == '__main__':
     host = os.getenv('HOST') if os.getenv('HOST') else '0.0.0.0'

@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-'''user and profile model'''
+'''define rate Model'''
 from .basemodel import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, CheckConstraint, Boolean
 
 
-
-
 class Rate(BaseModel, Base):
+    '''class Rate Model'''
     __tablename__ = 'rates'
     profile_id = Column(String(60), ForeignKey('profiles.id', ondelete='SET NULL'), nullable=True)
     project_id = Column(String(60), ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
@@ -16,5 +15,5 @@ class Rate(BaseModel, Base):
     )
 
     def __init__(self, *args, **kwargs):
-        """initializes Rate"""
+        """initializes Rate instance"""
         super().__init__(*args, **kwargs)

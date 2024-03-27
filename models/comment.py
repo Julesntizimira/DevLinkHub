@@ -5,11 +5,12 @@ from sqlalchemy import Column, String, Text, ForeignKey
 
 
 class Comment(BaseModel, Base):
+    '''comment model class'''
     __tablename__ = 'comments'
     project_id = Column(String(60), ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
     profile_id = Column(String(60), ForeignKey('profiles.id', ondelete='SET NULL'), nullable=True)
     text = Column(Text, nullable=True)
 
     def __init__(self, *args, **kwargs):
-        """initializes Comment"""
+        """initializes Comment instance"""
         super().__init__(*args, **kwargs)

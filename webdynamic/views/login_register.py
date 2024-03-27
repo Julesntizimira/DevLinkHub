@@ -1,3 +1,4 @@
+'''defines login and logout views'''
 from flask_login import login_user, login_required, current_user, logout_user
 from flask import render_template, redirect, url_for, flash, request
 from models import storage
@@ -8,7 +9,6 @@ from flask_bcrypt import Bcrypt
 
 
 bcrypt = Bcrypt()
-
 
 
 @app_views.route('/login', methods=['GET', 'POST'], strict_slashes=False)

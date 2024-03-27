@@ -10,10 +10,12 @@ from datetime import datetime
 time = "%B %d, %Y, %I:%M %p"
 
 class Base(DeclarativeBase):
+    '''declarative_base class'''
     pass
 
 
 class BaseModel():
+    '''BaseModel class contain shared functionalities to inherited'''
     id = Column(String(60), primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
@@ -45,13 +47,24 @@ class BaseModel():
         from . import storage
         self.updated_at = datetime.utcnow()
         if self.__class__.__name__ == 'User':
-            self.profile.save()
+            profile = self.profile
+            profile.username = self.username
+            profile.email=self.email
+            profile.name=self.name
+            storage.new(profile)
+        elif self.__class__.__name__ == 'Profile':
+            user = self.user
+            user.username = self.username
+            user.email=self.email
+            user.name=self.name
+            storage.new(user)
         storage.new(self)
         storage.save()
     
     def to_dict(self):
         '''convert an object into a dictionary'''
-        new_dict = {attr: val for attr, val in self.__dict__.copy().items() if not isinstance(val, BaseModel) }
+        new_dict = {attr: val for attr, val in\
+                    self.__dict__.copy().items() if not isinstance(val, BaseModel) }
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(time)
         if "updated_at" in new_dict:
@@ -67,6 +80,7 @@ class BaseModel():
         return f'[{self.__class__.__name__}.{self.id}] ({list_to_str})'
     
     def delete(self):
+        '''delete an instance of basemodel'''
         from . import storage
         if self.__class__.__name__ == 'Profile':
             user = self.user

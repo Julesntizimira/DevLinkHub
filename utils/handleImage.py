@@ -1,9 +1,11 @@
+'''define two functions which handle image uploads'''
 from werkzeug.utils import secure_filename
 import os
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
+    '''check if image extension is allowed'''
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def handleImage(file, item_id, model_type=None):

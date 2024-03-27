@@ -1,3 +1,4 @@
+'''define messages views, read, write, inbox'''
 from flask import request, render_template, redirect, url_for, flash
 from models.user import User
 from models import storage
@@ -18,6 +19,7 @@ def inbox():
 @app_views.route('/read_message/<message_id>', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
 def read_message(message_id):
+    '''read single message'''
     message = storage.get(Message, message_id)
     message.is_read = True
     message.save()

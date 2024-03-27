@@ -1,16 +1,13 @@
 #!/usr/bin/python3
-'''user and profile model'''
+'''defines user and profile model'''
 from models.basemodel import BaseModel, Base
 from sqlalchemy import Column, String, Boolean, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from .skill import Skill
-from .rate import Rate
-from .comment import Comment
-from .project import Project
 from flask_login import UserMixin
 
 
 class Profile(BaseModel, Base):
+    '''Profile model class'''
     __tablename__ = 'profiles'
     user_id = Column(String(60), ForeignKey('users.id'))
     user = relationship("User", back_populates="profile")
@@ -32,10 +29,12 @@ class Profile(BaseModel, Base):
 
 
     def __init__(self, *args, **kwargs):
+        '''initialise Profile instance'''
         super().__init__(*args, **kwargs)
 
 
 class User(BaseModel, Base, UserMixin):
+    '''User Model class'''
     __tablename__ = 'users'
     username = Column(String(150), nullable=False, unique=True)
     password = Column(String(150), nullable=False)
@@ -49,22 +48,12 @@ class User(BaseModel, Base, UserMixin):
                            )
     
     def __init__(self, *args, **kwargs):
-        """initializes User"""
+        """initializes User instance"""
         super().__init__(*args, **kwargs)
         if kwargs:
             if kwargs.get('profile', None) is None:
-                self.profile = Profile(
-                    username=self.username,
-                    email=self.email,
-                    user_id=self.id,
-                    name=self.name,
-                    )
+                self.profile = Profile(user_id=self.id)
         else:
-            self.profile = Profile(
-                username=self.username,
-                email=self.email,
-                user_id=self.id,
-                name=self.name,
-                )
+            self.profile = Profile(user_id=self.id)
 
 

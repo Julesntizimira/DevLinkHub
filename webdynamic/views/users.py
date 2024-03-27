@@ -1,9 +1,10 @@
 from flask import request, abort, render_template, redirect, url_for, flash
-from models.user import User, Profile, Skill
+from models.user import User, Profile
 from models import storage
 from . import app_views
-from forms.user import UserForm, ProfileForm, SkillForm
-from utils.handleImage import handleImage
+from forms.user import UserForm, ProfileForm
+from utils.handleImage import handleImage, allowed_file
+from utils.handleUserCreation import userAccountCreate, profileAccountUpdate
 from flask_login import current_user, login_required
 from utils.paginate import paginate
 from flask_mail import Message
@@ -87,25 +88,13 @@ def create_profile():
         for user in users:
             if user.username == username:
                 flash('User with the same username already exists', 'error')
-                return redirect(url_for('app_views.profiles'))
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        data = { k: v for k, v in request.form.items() if k in user_attr}
-        data['password'] = hashed_password
-        new_user = User(**data)
-        new_user.username = username
-        new_user.save()
-        profile = new_user.profile
+                return render_template('create_update_form.html', form=form)
         if form.profile_image.data:
-            profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
-            profile.save()
-        msg = Message(
-            subject='Welcome to Our Platform!',
-            recipients=[profile.email],
-            sender="devlinkhub250@gmail.com",
-            html=render_template('welcome_email.html', profile_setup_link='#')
-            )
-        from ..app import mail
-        mail.send(msg)
+            img = form.profile_image.data
+            if not allowed_file(img.filename):
+                flash('image formats accepted: png, jpg, jpeg, gif', 'error')
+                return render_template('create_update_form.html', form=form)
+        userAccountCreate(form, request)
         return redirect(url_for('app_views.login'))
     return render_template('create_update_form.html', form=form)
 
@@ -122,27 +111,15 @@ def update_profile():
             if prof.username == username:
                 if prof.id != profile.id:
                     flash('User with the same username already exists', 'error')
-                    return redirect(url_for('app_views.profiles'))
-        user_data = { k: v for k, v in request.form.items() if k in user_attr}
-        user = profile.user
-        for attr, val in user_data.items():
-            setattr(user, attr, val)
-        user.save()
-        profile_data = { k: v for k, v in request.form.items() if k in profile_attr}
-        for attr, val in profile_data.items():
-            setattr(profile, attr, val)
+                    return render_template('create_update_form.html', form=form)
+                break
         if form.profile_image.data:
-            profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
-        profile.save()
-        msg = Message(
-            subject='Welcome to Our Platform!',
-            recipients=[profile.email],
-            sender="devlinkhub250@gmail.com",
-            html=render_template('update_email.html', username=profile.username)
-            )
-        from ..app import mail
-        mail.send(msg)
-        return redirect(url_for('app_views.profiles'))
+            img = form.profile_image.data
+            if not allowed_file(img.filename):
+                flash('image formats accepted: png, jpg, jpeg, gif', 'error')
+                return render_template('create_update_form.html', form=form)
+        profileAccountUpdate(form, request, profile)
+        return redirect(url_for('app_views.account'))
     return render_template('create_update_form.html', form=form)
 
 

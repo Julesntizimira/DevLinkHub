@@ -1,5 +1,5 @@
 from flask import request, abort, render_template, redirect, url_for, flash
-from models.user import Profile, Skill
+from models.skill import Skill
 from models import storage
 from . import app_views
 from forms.user import SkillForm
