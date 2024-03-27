@@ -5,6 +5,7 @@ from .views import app_views
 from flask_login import LoginManager, current_user
 from models import storage
 from models.user import User
+from flask_mail import Mail
 
 
 app = Flask(__name__)
@@ -15,6 +16,20 @@ def linebreaksbr(value):
     """Convert newlines to <br> tags."""
     return Markup(value.replace('\n', '<br>'))
 app.jinja_env.filters['linebreaksbr'] =  linebreaksbr
+
+
+# Configure Flask-Mail settings
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # SMTP server address
+app.config['MAIL_PORT'] = 587  # SMTP port (usually 587 for TLS/STARTTLS)
+app.config['MAIL_USE_TLS'] = True  # Enable TLS encryption
+app.config['MAIL_USERNAME'] = 'devjules250@gmail.com'  # SMTP username
+app.config['MAIL_PASSWORD'] = os.getenv('MAILPSSWD')  # SMTP password
+app.config['MAIL_DEFAULT_SENDER'] = 'devlinkhub250@gmail.com'  # Default sender email address
+
+
+
+# Initialize Flask-Mail
+mail = Mail(app)
 
 app.register_blueprint(app_views)
 

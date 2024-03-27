@@ -6,23 +6,9 @@ from forms.user import UserForm, ProfileForm, SkillForm
 from utils.handleImage import handleImage
 from flask_login import current_user, login_required
 from utils.paginate import paginate
+from flask_mail import Message
 
 
-# urlpatterns = [
-#     path('', views.profiles, name='profiles' ),
-#     path('profile/<str:id>/', views.userProfile, name='user-profile'),
-#     path('login/', views.loginPage, name='login'),
-#     path('logout/', views.logoutUser, name='logout'),
-#     path('register/', views.registerUser, name='register'),
-#     path('account/', views.userAccount, name='account'),
-#     path('edit-account/', views.editAccount, name='edit-account'),
-#     path('create-skill/', views.createSkill, name='create-skill'),
-#     path('update-skill/<str:id>', views.updateSkill, name='update-skill'),
-#     path('delete-skill/<str:id>', views.deleteSkill, name='delete-skill'),
-#     path('inbox/', views.inbox, name='inbox'),
-#     path('message/<str:id>', views.viewMessage, name='message'),
-#     path('create-message/<str:id>', views.createMessage, name='create-message'),
-# ]
 
 user_attr = [
         'username',
@@ -109,6 +95,14 @@ def create_profile():
         if form.profile_image.data:
             profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
             profile.save()
+        msg = Message(
+            subject='Welcome to Our Platform!',
+            recipients=[profile.email],
+            sender="devlinkhub250@gmail.com",
+            html=render_template('welcome_email.html', profile_setup_link='#')
+            )
+        from ..app import mail
+        mail.send(msg)
         return redirect(url_for('app_views.login'))
     return render_template('create_update_form.html', form=form)
 
@@ -137,6 +131,14 @@ def update_profile():
         if form.profile_image.data:
             profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
         profile.save()
+        msg = Message(
+            subject='Welcome to Our Platform!',
+            recipients=[profile.email],
+            sender="devlinkhub250@gmail.com",
+            html=render_template('update_email.html', username=profile.username)
+            )
+        from ..app import mail
+        mail.send(msg)
         return redirect(url_for('app_views.profiles'))
     return render_template('create_update_form.html', form=form)
 
