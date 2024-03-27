@@ -16,7 +16,9 @@
           {% if current_user.is_authenticated %}
           <li class="header__menuItem"><a href="{{url_for('app_views.inbox')}}">Inbox</a></li>
           <li class="header__menuItem"><a href="{{url_for('app_views.account')}}">My Account</a></li>
+         
           <li class="header__menuItem"><a href="{{url_for('app_views.logout')}}" class="btn btn--sub">Logout</a></li>
+          <li class="header__menuItem"><a href="{{url_for('app_views.delete_profile')}}" class="btn btn--sub">Delete Account</a></li>
           {% else %}
           <li class="header__menuItem"><a href="{{url_for('app_views.login')}}" class="btn btn--sub">Login/Sign Up</a></li>
           {% endif %}

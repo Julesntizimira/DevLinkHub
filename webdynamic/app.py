@@ -7,9 +7,9 @@ from models import storage
 from models.user import User
 from flask_mail import Mail
 
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here'
+secret_key = os.urandom(24)
+app.config['SECRET_KEY'] = str(secret_key)
 
 
 def linebreaksbr(value):

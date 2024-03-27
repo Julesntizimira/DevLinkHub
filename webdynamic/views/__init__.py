@@ -9,3 +9,4 @@ from .skills import *
 from .comments import *
 from .login_register import *
 from .messages import *
+from .password_reset import *

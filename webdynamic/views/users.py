@@ -7,12 +7,14 @@ from utils.handleImage import handleImage
 from flask_login import current_user, login_required
 from utils.paginate import paginate
 from flask_mail import Message
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 
 
 user_attr = [
         'username',
-        'password',
         'email',
         'name'
         ]
@@ -72,7 +74,6 @@ def account():
     '''user account'''
     profile = current_user.profile
     print(profile.name)
-    # profile = storage.get(Profile, 'f9aa840f-26f4-4ded-8fb3-d1829dd1f356')
     return render_template('account.html', profile=profile)
 
 
@@ -87,7 +88,9 @@ def create_profile():
             if user.username == username:
                 flash('User with the same username already exists', 'error')
                 return redirect(url_for('app_views.profiles'))
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
         data = { k: v for k, v in request.form.items() if k in user_attr}
+        data['password'] = hashed_password
         new_user = User(**data)
         new_user.username = username
         new_user.save()
@@ -143,13 +146,13 @@ def update_profile():
     return render_template('create_update_form.html', form=form)
 
 
-@app_views.route('/delete_profile/<profile_id>', methods=['GET', 'POST'], strict_slashes=False)
+@app_views.route('/delete_profile', methods=['GET', 'POST'], strict_slashes=False)
 @login_required
-def delete_profile(profile_id):
-    '''delete project'''
-    profile = current_user.profile
+def delete_profile():
+    '''delete user account'''
     if request.method == 'POST':
-        form = request.form
+        current_user.delete()
+        return redirect(url_for('app_views.login'))
     return render_template('delete.html')
 
 

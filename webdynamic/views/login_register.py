@@ -22,15 +22,17 @@ def login():
                 user = obj
                 break
         if user:
-            if user.password == form.password.data:
+            if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 if current_user.is_authenticated:
                     flash('Login successful', 'success')
                     return redirect(url_for('app_views.account'))
             else:
                 # Handle the case where the user is not logged in
-                flash('username or password incorrect', 'error')
+                flash('password incorrect', 'error')
                 return redirect(url_for('app_views.login'))
+        else:
+            flash(f'User {form.username.data} does not exist', 'error')
     return render_template('login.html', form=form)
 
 
