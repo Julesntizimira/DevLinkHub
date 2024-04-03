@@ -7,9 +7,13 @@ from models import storage
 from models.user import User
 from flask_mail import Mail
 from flask_cors import CORS
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 CORS(app)
+
+load_dotenv()
 
 secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = str(secret_key)
@@ -22,13 +26,12 @@ app.jinja_env.filters['linebreaksbr'] =  linebreaksbr
 
 
 # Configure Flask-Mail settings
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # SMTP server address
-app.config['MAIL_PORT'] = 587  # SMTP port (usually 587 for TLS/STARTTLS)
-app.config['MAIL_USE_TLS'] = True  # Enable TLS encryption
-app.config['MAIL_USERNAME'] = 'devjules250@gmail.com'  # SMTP username
-app.config['MAIL_PASSWORD'] = os.getenv('MAILPSSWD')  # SMTP password
-app.config['MAIL_DEFAULT_SENDER'] = 'devlinkhub250@gmail.com'  # Default sender email address
-
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER') # SMTP server address
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))  # SMTP port (usually 587 for TLS/STARTTLS)
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS').lower() in ['true', '1', 'yes'] # Enable TLS encryption
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME') # SMTP username
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD') # SMTP password
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER') # Default sender email address
 
 
 # Initialize Flask-Mail

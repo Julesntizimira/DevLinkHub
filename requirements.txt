@@ -1,0 +1,9 @@
+flask
+sqlalchemy
+flask-login
+flask-wtf
+flask-mail
+flask-bcrypt
+flask-cors
+python-dotenv
+alembic
