@@ -49,12 +49,12 @@ def profiles():
         profiles = list(storage.all(Profile).values())
     page = int(request.args.get('page', 1))
     # Number of profiles per page
-    items_on_page, total_pages, custom_range = paginate(profiles, page)
+    result = paginate(profiles, page)
     context = {
-        'items_on_page': items_on_page,
-        'total_pages': total_pages,
+        'items_on_page': result('items_on_page'),
+        'total_pages': result('total_pages'),
         'queryPage': page,
-        'custom_range': custom_range,
+        'custom_range': result('custom_range'),
         'searchQuery': searchQuery if searchQuery else None
         }
     return render_template('profiles.html', **context)

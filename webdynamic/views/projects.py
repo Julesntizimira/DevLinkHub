@@ -3,7 +3,7 @@ from flask import request, render_template, flash, redirect, url_for
 from models.project import Project, Tag
 from models import storage
 from . import app_views
-from forms.project import ProjectForm
+from forms.project import ProjectForm, LinkForm
 from utils.handleImage import allowed_file
 from flask_login import current_user, login_required
 from utils.paginate import paginate
@@ -30,12 +30,12 @@ def projects():
     else:
         projects = list(storage.all(Project).values())
     page = int(request.args.get('page', 1))
-    items_on_page, total_pages, custom_range = paginate(projects, page)
+    result = paginate(projects, page)
     context = {
-        'items_on_page': items_on_page,
-        'total_pages': total_pages,
+        'items_on_page': result.get('items_on_page'),
+        'total_pages': result('total_pages'),
         'queryPage': page,
-        'custom_range': custom_range,
+        'custom_range': result.get('custom_range'),
         'searchQuery': searchQuery if searchQuery else None
         }
     return render_template('projects.html', **context)
@@ -54,6 +54,7 @@ def create_project():
     '''create_project'''
     projects = storage.all(Project).values()
     form = ProjectForm()
+    link = LinkForm() 
     form.populate_tags()
     if request.method == 'POST' and form.validate_on_submit:
         for project in projects:
@@ -68,7 +69,7 @@ def create_project():
         create_new_project(request, current_user, form)
         flash('new project successfully created', 'success')
         return redirect(url_for('app_views.account'))
-    return render_template('create_update_form.html', form=form)
+    return render_template('create_update_form.html', form=form, linkform=link)
 
 @app_views.route('/update_project/<project_id>', methods=['GET', 'POST'])
 @login_required

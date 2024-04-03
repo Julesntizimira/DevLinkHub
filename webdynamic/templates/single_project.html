@@ -52,6 +52,14 @@
           <img class="singleProject__preview" src="{{url_for('static', filename=project.image_url)}}" alt="portfolio thumbnail" />
           <a href="{{url_for('app_views.profile', profile_id=project.user.profile.id)}}" class="singleProject__developer">{{project.user.profile.name}}</a>
           <h2 class="singleProject__title">{{project.title}}</h2>
+
+          {% if current_user.is_authenticated and current_user.id == project.user.id %}
+          <td class="settings__tableActions">
+            <a class="tag tag--pill tag--main settings__btn" href="{{url_for('app_views.update_project', project_id=project.id)}}"><i class="im im-x-mark-circle-o"></i>
+              edit Project </a>
+          </td>
+          {% endif %}
+
           {% if project.description %}
           <h3 class="singleProject__subtitle">About the Project</h3>
     
@@ -72,7 +80,11 @@
           <div class="comments">
             <h3 class="singleProject__subtitle">Feedback</h3>
             <h5 class="project--rating">
-              36% Postitive Feedback (18 Votes)
+              {% if current_user.is_authenticated %}
+              Share your thoughts here
+              {% else %}
+              <a href="{{url_for('app_views.login')}}">Login</a> to interact and engage with other users on the platform.
+              {% endif %}
             </h5>
 
             <form class="form" action="{{url_for('app_views.add_comment', project_id=project.id)}}" method="POST">
@@ -96,6 +108,12 @@
                   <a href="{{url_for('app_views.profile', profile_id=comment.profile.id)}}" class="comment__author">{{comment.profile.name}}</a>
                   <p class="comment__info">{{comment.text}}</p>
                 </div>
+                {% if current_user.is_authenticated and current_user.profile.id == comment.profile.id %}
+                <td class="settings__tableActions">
+                  <a class="tag tag--pill tag--main settings__btn" href="{{url_for('app_views.delete_comment', comment_id=comment.id, project_id=project.id)}}"><i class="im im-x-mark-circle-o"></i>
+                    Delete</a>
+                </td>
+                {% endif %}
               </div>
               {% endfor %}
             </div>

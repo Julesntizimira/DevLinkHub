@@ -4,7 +4,9 @@ from models import storage
 
 
 def project_search(searchQuery):
-    '''search project by title, tags, objectives, takeaways, description'''
+    '''search project by title, tags,
+       objectives, takeaways, description
+    '''
     projects = []
     searchQuery = searchQuery.lower()
     for project in storage.all(Project).values():

@@ -1,3 +1,4 @@
+'''skills view'''
 from flask import request, abort, render_template, redirect, url_for, flash
 from models.skill import Skill
 from models import storage

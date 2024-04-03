@@ -20,7 +20,7 @@ class TakeawayForm(FlaskForm):
 
 class SubtitleForm(FlaskForm):
     text = StringField('Text')
-    objectives = FieldList(FormField(ObjectiveForm), min_entries=30)
+    objectives = FieldList(FormField(ObjectiveForm), min_entries=1)
 
 
 class MultiCheckboxField(SelectMultipleField):
@@ -35,9 +35,9 @@ class ProjectForm(FlaskForm):
     source_link = TextAreaField('Source Link')
     image = FileField('Image')
     tags = MultiCheckboxField('Tags', coerce=str)
-    links = FieldList(FormField(LinkForm), min_entries=15)
-    takeaways = FieldList(FormField(TakeawayForm), min_entries=20)
-    subtitles = FieldList(FormField(SubtitleForm), min_entries=10)
+    links = FieldList(FormField(LinkForm), min_entries=1)
+    takeaways = FieldList(FormField(TakeawayForm), min_entries=1)
+    subtitles = FieldList(FormField(SubtitleForm), min_entries=1)
 
     def populate_tags(self, current_tags=None):
         # Populate the choices for the tags field

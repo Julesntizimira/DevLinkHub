@@ -35,7 +35,9 @@ def userAccountCreate(form, request):
     new_user.save()
     profile = new_user.profile
     if form.profile_image.data:
-        profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
+        profile.profile_image_url = handleImage(form.profile_image.data,
+                                                profile.id, 'profile'
+                                                )
         profile.save()
     msg = Message(
         subject='Welcome to Our Platform!',
@@ -58,7 +60,8 @@ def profileAccountUpdate(form, request, profile):
     for attr, val in profile_data.items():
         setattr(profile, attr, val)
     if form.profile_image.data:
-        profile.profile_image_url = handleImage(form.profile_image.data, profile.id, 'profile')
+        profile.profile_image_url = handleImage(form.profile_image.data,
+                                                profile.id, 'profile')
     profile.save()
     msg = Message(
         subject='Welcome to Our Platform!',

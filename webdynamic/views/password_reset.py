@@ -1,3 +1,4 @@
+'''handle password reset mechanism'''
 from flask import request, render_template, redirect, url_for, flash, session
 from models.user import User
 from models import storage

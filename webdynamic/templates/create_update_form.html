@@ -22,9 +22,33 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
+                  
+
+                       
                     </div>
                     {% endif %}
                 {% endfor %}
+                
+                {% for field in linkform %}
+                {% if field.label.text != 'CSRF Token' %}
+                <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="{{ field.id }}">{{ field.label }}</label>
+                        {{ field(class="input input--text", placeholder=field.label.text) }}
+                        {% if field.errors %}
+                            <ul class="errors">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                  
+
+                       
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
                 <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
             </form>
         </div>
