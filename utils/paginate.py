@@ -15,4 +15,16 @@ def paginate(data, page):
     leftindex = page - 4 if page > 4 else 1
     rightIndex =  page + 5 if (page + 5) <= total_pages else total_pages + 1
     custom_range = range(leftindex, rightIndex)
-    return items_on_page, total_pages, custom_range
+    prev_page = page - 1 if page > 1 else None
+    next_page = page + 1 if page + 1 <= total_pages else total_pages + 1
+    result = {
+        'page': page,
+        'page_size': per_page,
+        'prev_page': prev_page,
+        'next_page': next_page,
+        'items_on_page': items_on_page,
+        'total_pages': total_pages,
+        'custom_range': custom_range,
+        
+    }
+    return result

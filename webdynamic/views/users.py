@@ -1,3 +1,4 @@
+'''users views'''
 from flask import request, abort, render_template, redirect, url_for, flash
 from models.user import User, Profile
 from models import storage
@@ -51,10 +52,10 @@ def profiles():
     # Number of profiles per page
     result = paginate(profiles, page)
     context = {
-        'items_on_page': result('items_on_page'),
-        'total_pages': result('total_pages'),
+        'items_on_page': result.get('items_on_page'),
+        'total_pages': result.get('total_pages'),
         'queryPage': page,
-        'custom_range': result('custom_range'),
+        'custom_range': result.get('custom_range'),
         'searchQuery': searchQuery if searchQuery else None
         }
     return render_template('profiles.html', **context)

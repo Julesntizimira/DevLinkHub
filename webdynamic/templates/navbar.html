@@ -11,10 +11,12 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
+          <li class="header__menuItem"><a href="{{url_for('app_views.landingpage')}}">About</a></li>
           <li class="header__menuItem"><a href="{{url_for('app_views.profiles')}}">Developers</a></li>
           <li class="header__menuItem"><a href="{{ url_for('app_views.projects')}}">Projects</a></li>
+         
           {% if current_user.is_authenticated %}
-          <li class="header__menuItem"><a href="{{url_for('app_views.inbox')}}">Inbox</a></li>
+          <li class="header__menuItem"><a href="{{url_for('app_views.inbox')}}">Inbox(<span class="unrd">{{current_user.unread}}</span>)</a></li>
           <li class="header__menuItem"><a href="{{url_for('app_views.account')}}">My Account</a></li>
          
           <li class="header__menuItem"><a href="{{url_for('app_views.logout')}}" class="btn btn--sub">Logout</a></li>

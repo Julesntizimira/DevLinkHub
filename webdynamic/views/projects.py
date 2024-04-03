@@ -1,4 +1,4 @@
-
+'''projects views'''
 from flask import request, render_template, flash, redirect, url_for
 from models.project import Project, Tag
 from models import storage
@@ -20,7 +20,6 @@ project_attr = [
 
 
 @app_views.route('/projects', methods=['GET'], strict_slashes=False)
-@app_views.route('/', methods=['GET'], strict_slashes=False)
 def projects():
     '''all projects'''
     searchQuery = None
@@ -33,7 +32,7 @@ def projects():
     result = paginate(projects, page)
     context = {
         'items_on_page': result.get('items_on_page'),
-        'total_pages': result('total_pages'),
+        'total_pages': result.get('total_pages'),
         'queryPage': page,
         'custom_range': result.get('custom_range'),
         'searchQuery': searchQuery if searchQuery else None

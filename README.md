@@ -1,32 +1,40 @@
-# Tradit - Empowering Book Enthusiasts through Shared Reading
+# DevLinkHub - Connect with other developers, enjoy a customized learning environment, and effortlessly revisit learned concepts through search.
 
 ## Introduction
 
 ### The Project
 
-Tradit addresses the common scenario where individuals accumulate books they no longer need. This platform offers a space to exchange or give away books, fostering connections among individuals with shared literary interests.
+DevlinkHub addresses the scenario where a student needs to revisit some concepts but has to go through the entire curriculum to find a specific concept to read about. Sometimes, you don't even remember in which project you learned that concept. It might even be just a keyword. DevlinkHub will help you search for projects by concept, programming language, or any keyword you want. It provides an enhanced, customized learning environment where you can take notes about your takeaways. You can also go back to each project and find your notes linked to that project. The platform also enhances user interaction, allowing users to share insightful resources about projects.
 
 ### The Context
 
-This project serves as my Portfolio Project, marking the conclusion of my Foundation at ALX - Holberton School. Despite the option to work in a team, I chose to work solo due to availability constraints. I aimed to create a seamless experience for book enthusiasts while showcasing my coding skills.
+This project serves as my Portfolio Project, marking the conclusion of my specialization at ALX - Holberton School. Despite the option to work in a team, I chose to work solo due to availability constraints. I aimed to create a seamless experience for book enthusiasts while showcasing my coding skills.
 
 ### The Team
 
-I am Jules Ntizimira, a passionate coder with a unique perspective fueled by a love for literature and entrepreneurship. Follow me on [Twitter](https://twitter.com/NtizimiraJ) for more tech-related updates.
+I am Jules Ntizimira, a passionate coder with a unique perspective fueled by a love for tech and entrepreneurship. Follow me on [Twitter](https://twitter.com/NtizimiraJ) for more tech-related updates.
 
 ## User Stories
 
-As a book enthusiast:
-- I want to discover a platform for exchanging books
-- So that I can exchange my read books for new ones without incurring additional costs
+As a Developper:
+* Login: As a user, I want to be able to log into the DevlinkHub platform securely using my username and password.
+* Signup: As a new user, I want to create an account on DevlinkHub by providing my email, username, and password.
+* Password Reset through Email: As a user, I want the option to reset my password via email if I forget it, ensuring secure access to my account.
+* View All Projects on the Platform: As a user, I want to see a comprehensive list of all projects available on the DevlinkHub platform.
+* View All Developers: As a user, I want to browse and view profiles of all developers registered on DevlinkHub.
+* Interact with Others through Comments: As a user, I want to comment on projects and interact with other users and developers by leaving comments and receiving feedback.
+* Messages Between Users: As a user, I want to send and receive private messages to communicate with other users and developers on the platform.
+* Effortless Search for Projects, Concepts, or Keywords: As a user, I want to easily search for projects, concepts, or keywords across the platform to find relevant information quickly.
+* See a Note on Every Project: As a user, I want to have a note section on every project where I can write and save my thoughts, ideas, or takeaways related to that project.
+* Logout: As a user, I want to securely log out of my DevlinkHub account to protect my privacy and data.
 
 **Acceptance Criteria:**
 - Users can create a profile
-- Browse diverse books
-- Search for specific books by title, author, or genre
-- View detailed book information and user reviews
-- Propose book exchanges and receive notifications
-- Access a secure communication channel for finalizing exchanges
+- Browse diverse projects
+- Search for specific project by title, tag, or concepts and keywords
+- View detailed project information and user reviews
+- receive notification on message
+
 
 ## Blog Posts
 
@@ -36,15 +44,15 @@ Read the blog post: [Tradit: Swap Books — Share the Joy](https://medium.com/@n
 
 ## Tutorial
 
-Take a tour of the deployed version at [Tradit](https://julesntizimira.github.io/Tradit/).
+Take a tour of the deployed version at [DevLinkHub](http://192.168.1.64:5200).
 
-Here is a little preview of our main feature, the dashboard:
+Here is a little preview of our main feature, the landingpage:
 
-![dashboard](./landingImages/dashboard.png)
+![dashboard](./landingImages/landingpage.png)
 
-Here is a preview for the chat room page:
+Here is a preview for the login page:
 
-![chat room](./landingImages/chatroom.png)
+![chat room](./landingImages/login.png)
 
 
 ## Known Bugs

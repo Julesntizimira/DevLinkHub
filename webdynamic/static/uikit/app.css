@@ -102,3 +102,11 @@ pre.codeblock {
   text-align: center;
   background: var(--color-main);
 }
+.auth {
+  background-image: linear-gradient(
+        115deg,
+        rgba(58, 58, 158, 0.8),
+        rgba(136, 136, 206, 0.7)
+      ),
+      url(https://cdn.freecodecamp.org/testable-projects-fcc/images/survey-form-background.jpeg);
+}

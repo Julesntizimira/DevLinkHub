@@ -55,5 +55,11 @@ class User(BaseModel, Base, UserMixin):
                 self.profile = Profile(user_id=self.id)
         else:
             self.profile = Profile(user_id=self.id)
-
+    
+    @property
+    def unread(self):
+        '''return unread messages'''
+        messages = sorted(self.received_messages, key=lambda x: x.created_at, reverse=True)
+        unread = sum(1 for message in messages if not message.is_read)
+        return unread
 
