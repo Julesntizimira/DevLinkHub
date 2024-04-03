@@ -14,7 +14,11 @@
                 <!-- Input:Text -->
                     <div class="form__field">
                         <label for="{{ field.id }}">{{ field.label }}</label>
+                        {% if field.name == 'password' or field.name == 'confirm_password' %}
+                        {{ field(class="input input--text", placeholder=field.label.text, type='password') }}
+                        {% else %}
                         {{ field(class="input input--text", placeholder=field.label.text) }}
+                        {% endif %}
                         {% if field.errors %}
                             <ul class="errors">
                                 {% for error in field.errors %}

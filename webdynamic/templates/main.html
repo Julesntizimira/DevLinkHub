@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='uikit/styles/uikit.css') }}"/>
   <!-- Dev Search UI -->
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/app.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='uikit/app.js') }}"></script>
+
 
   <title>DevLinkHub - Connect with Developers!</title>
 </head>
@@ -25,7 +27,7 @@
         {% for category, message in messages %}
         <div class="alert alert--{{category}}">
             <p class="alert__message">{{ message }}</p>
-            <button class="alert__close">⨯</button>
+            <button class="alert__close" onclick="closeAlert(this)">⨯</button>
           </div>
         {% endfor %}
       {% endif %}
@@ -34,5 +36,4 @@
 
     {% endblock %}
 </body>
-
 </html>

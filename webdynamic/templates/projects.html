@@ -33,10 +33,10 @@
                 <div class="card__body">
                   <h3 class="project__title">{{project.title}}</h3>
                   <p><a class="project__author" href="{{url_for('app_views.profile', profile_id=project.user.profile.id)}}">By {{project.user.profile.name}}</a></p>
-                  <p class="project--rating">
+                  <!-- <p class="project--rating">
                     <span style="font-weight: bold;">98%</span> Postitive
                     Feedback (72 Votes)
-                  </p>
+                  </p> -->
                   <div class="project__tags">
                     {% for tag in project.tags %}
                     <span class="tag tag--pill tag--main">
