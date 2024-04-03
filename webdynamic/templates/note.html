@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f8fafd;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+        .container {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            background-color: #fffefd;
+            border: 2px solid #767676;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            height: 600px;
+            padding: 20px;
+         
+        }
+        legend {
+            text-align: center;
+        }
+        fieldset {
+            border: none;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+        textarea {
+            width: 90%;
+            height: 90%;
+            padding: 1rem;
+            font-size: 13px;
+        }
+        textarea:focus {
+            border-color: #4CAF50; /* Change border color when textarea is focused */
+        }
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3;
+        }
+        button:hover {
+            background-color: #007bff;
+        }
+        button:active {
+            background-color: red;
+        }
+        h1 > a {
+            color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+            <h1><a href="{{url_for('app_views.single_project', id=project_id)}}">Back</a></h1>
+        
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend>Add your notes below</legend>
+                <label for="note"></label>
+                {{ form.text(rows=10, cols=30, id="note", class="form-control") }}
+                <button type="submit">Save</button>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

@@ -13,6 +13,7 @@ from models.link import Link
 from models.objective import Objective
 from models.takeaway import Takeaway
 from models.subtitle import Subtitle
+from models.note import Note
 
 
 classes = {
@@ -27,7 +28,8 @@ classes = {
     'Objective': Objective,
     'Link': Link,
     'Takeaway': Takeaway,
-    'Subtitle': Subtitle
+    'Subtitle': Subtitle,
+    'Note': Note
 }
 
 

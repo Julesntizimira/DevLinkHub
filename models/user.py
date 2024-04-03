@@ -26,6 +26,7 @@ class Profile(BaseModel, Base):
                           cascade="all, delete, delete-orphan")
     comments = relationship("Comment", backref="profile", cascade="all, delete-orphan")
     rates = relationship("Rate", backref="profile", cascade="all, delete-orphan")
+    notes = relationship("Note", backref="profile", cascade="all, delete-orphan")
 
 
     def __init__(self, *args, **kwargs):

@@ -33,6 +33,7 @@ class Project(BaseModel, Base):
     objectives = relationship("Objective", backref="project", cascade="all, delete-orphan")
     takeaways = relationship("Takeaway", backref="project", cascade="all, delete-orphan")
     subtitles = relationship("Subtitle", backref="project", cascade="all, delete-orphan")
+    notes = relationship("Note", backref="project", cascade="all, delete-orphan")
 
     def __init__(self, *args, **kwargs):
         """initializes Project instance"""

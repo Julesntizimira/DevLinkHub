@@ -9,6 +9,8 @@ from flask_login import current_user, login_required
 from utils.paginate import paginate
 from utils.handleProject import create_new_project, updateProjectHandler
 from utils.handleProjectSearch import project_search
+from forms.note import NoteForm
+from models.note import Note
 
 
 project_attr = [
@@ -109,3 +111,23 @@ def delete_project(project_id):
         return redirect(url_for('app_views.account'))
     return render_template('delete.html')
 
+
+
+@app_views.route('/note/<project_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
+def note(project_id):
+    '''take a note'''
+    project = storage.get(Project, project_id)
+    thenote = None
+    if project.notes:
+        for note in project.notes:
+            if note.profile_id == current_user.profile.id:
+                thenote = note
+    if not thenote:
+        thenote = Note(text="", project_id=project_id, profile_id=current_user.profile.id)
+        thenote.save()
+    form = NoteForm(obj=thenote)
+    if request.method == 'POST':
+        thenote.text = form.text.data
+        thenote.save()
+    return render_template('note.html', form=form, project_id=project_id)

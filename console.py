@@ -14,6 +14,8 @@ from models.link import Link
 from models.objective import Objective
 from models.takeaway import Takeaway
 from models.subtitle import Subtitle
+from models.note import Note
+
 
 import shlex  # for splitting the line along spaces except in double quotes
 
@@ -32,7 +34,8 @@ classes = {
     'Objective': Objective,
     'Link': Link,
     'Takeaway': Takeaway,
-    'Subtitle': Subtitle
+    'Subtitle': Subtitle,
+    'Note': Note
 }
 
 class HBNBCommand(cmd.Cmd):
