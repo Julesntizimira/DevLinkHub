@@ -54,11 +54,18 @@ Here is a preview for the login page:
 
 ![chat room](./landingImages/login.png)
 
+Here is a preview for the user account page:
+
+![chat room](./landingImages/account.png)
+
+Here is a preview for the projects page:
+
+![chat room](./landingImages/projects.png)
+
 
 ## Known Bugs
 
-- The app is slow due to pictures being saved on the server
-- Not responsive views
+- some features are not yet implemented
 
 ## Architecture
 
@@ -66,7 +73,7 @@ Here is a preview for the login page:
 
 ### Overview
 
-The web app comprises Python and MySQL on the backend, with Flask as the framework interface. HTML/CSS and JavaScript handle frontend functionalities. Nginx manages the server side, served by the Gunicorn application server. An additional app for API runs on different ports. For certain functionalities, the main app accesses the server directly, while others use the API.
+The web app comprises Python and SQlite on the backend, with Flask as the framework interface. HTML/CSS and JavaScript handle frontend functionalities. Nginx manages the server side, served by the Gunicorn application server. An additional app for API runs on different ports. For certain functionalities, the main app accesses the server directly, while others use the API.
 
 ### List of Components
 
@@ -74,28 +81,36 @@ These components define the user experience in Tradit, with each component housi
 
 | Component     | Description                                      |
 | ------------- | ------------------------------------------------ |
-| [Index](./webdynamic/Landing.vue)   | Landing page for users on Tradit                 |
+| [Landing Page](./webdynamic/templates/landingpage.html)   | Landing page for users on Tradit                 |
 | [Login](./webdynamic/templates/login.html)   | Login page with a link to the Signup page         |
-| [Community](./webdynamic/templates/users.html) | Page displaying other users                     |
-| [Chat Room](./webdynamic/templates/room.html) | Secure chat room for users                       |
-| [Signup](./webdynamic/templates/register.html) | Signup page requiring user information           |
-| [Dashboard](./webdynamic/templates/book.html) | Main page where users explore available books    |
-| [About](./webdynamic/templates/book.html) | Information page about the platform              |
-| [Register Book](./webdynamic/templates/registerb.html) | Page for users to register a new book    |
+| [profiles](./webdynamic/templates/profiles.html) | Page displaying other users                     |
+| [Inbox](./webdynamic/templates/inbox.html) | messages received by user                       |
+| [Signup](./webdynamic/templates/create_update_form) | Signup page requiring user information           |
+| [Projects](./webdynamic/templates/projects.html) | Main page where users explore available projects    |
+| [About](./webdynamic/templates/landingpage.html) | Information page about the platform              |
+
 
 ## Authentication
 
-Implementing a robust authentication system was a pivotal aspect of Tradit's development. To achieve this, I delved into learning Flask-Login, a tool that streamlined the management of user logins. Flask-Login not only facilitated a secure and seamless login experience but also provided valuable functionalities such as handling the current user. By leveraging this technology, Tradit ensures that user authentication is not just a procedural step but a feature that enhances the overall user experience.
+Implementing a robust authentication system was a pivotal aspect of DevlinkHub's development. To achieve this, I delved into learning Flask-Login, a tool that streamlined the management of user logins. Flask-Login not only facilitated a secure and seamless login experience but also provided valuable functionalities such as handling the current user. By leveraging this technology, DevLinkHub ensures that user authentication is not just a procedural step but a feature that enhances the overall user experience. 
 
-## Socket Chat Rooms
+## Password Reset System
 
-Real-time communication is at the heart of Tradit's user interaction, and this is made possible through the implementation of socket chat rooms. These chat rooms offer users a secure and dynamic environment to engage in live conversations. When a user expresses interest in a particular book, the chat room becomes the conduit for direct communication with the owner, allowing them to finalize the details of the book exchange securely. The integration of socket chat rooms adds a layer of immediacy and interactivity, making Tradit more than just a platform for book exchange but a community where users can connect effortlessly.
+
+Our application includes a robust password reset system to ensure the security and convenience of our users. If a user forgets their password, they can easily reset it using the following steps:
+
+* Enter Email: The user who forgot their password is prompted to enter their email address.
+* Reset Token: Upon submitting their email, a reset token is generated and sent to their registered email address.
+* Token Verification: The user checks their email and retrieves the reset token. They are then prompted to enter this token in our application for verification.
+* New Password: After successfully verifying the token, the user is prompted to enter a new password, enhancing their account security.
+This password reset process ensures that our users can regain access to their accounts securely and with ease.
+
 
 # Acknowledgments
 
 - ALX staff: For the help, advice, and resources throughout the project and curriculum.
 - Cohort 13 and all ALX students: For friendship, support, and insights over the last year.
-- YOU: For reading this documentation and testing out Tradit. We hope you enjoyed the ride!
+- YOU: For reading this documentation and testing out DevLinkHub. We hope you enjoyed the ride!
 
 # Related Projects
 
