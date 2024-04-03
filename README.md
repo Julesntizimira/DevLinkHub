@@ -110,6 +110,7 @@ This password reset process ensures that our users can regain access to their ac
 
 - ALX staff: For the help, advice, and resources throughout the project and curriculum.
 - Cohort 13 and all ALX students: For friendship, support, and insights over the last year.
+- Mumble UI for the frontend interfaces
 - YOU: For reading this documentation and testing out DevLinkHub. We hope you enjoyed the ride!
 
 # Related Projects

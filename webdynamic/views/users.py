@@ -10,6 +10,7 @@ from flask_login import current_user, login_required
 from utils.paginate import paginate
 from flask_mail import Message
 from flask_bcrypt import Bcrypt
+from utils.handleProjectSearch import profile_search
 
 bcrypt = Bcrypt()
 
@@ -38,14 +39,7 @@ def profiles():
     searchQuery = None
     if request.args.get('text'):
         searchQuery = request.args.get('text').lower()
-        for profile in storage.all(Profile).values():
-            if (profile.name and searchQuery in profile.name.lower()) or (profile.bio and searchQuery in profile.bio.lower()):
-                    profiles.append(profile)
-            else:
-                for skill in profile.skills:
-                    if searchQuery in skill.name.lower():
-                        profiles.append(profile)
-                        break
+        profiles = profile_search(searchQuery)
     else:
         profiles = list(storage.all(Profile).values())
     page = int(request.args.get('page', 1))

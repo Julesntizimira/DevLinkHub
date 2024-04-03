@@ -1,7 +1,16 @@
 '''
 custom pagination function
 '''
-def paginate(data, page):
+import os
+
+
+if os.getenv('DOMAIN_NAME'):
+    domain = os.getenv('DOMAIN_NAME')
+else:
+    domain = 'http://127.0.0.1:5100'
+
+
+def paginate(data, page=1):
     '''handle pagination
     '''
     per_page = 9
@@ -16,15 +25,33 @@ def paginate(data, page):
     rightIndex =  page + 5 if (page + 5) <= total_pages else total_pages + 1
     custom_range = range(leftindex, rightIndex)
     prev_page = page - 1 if page > 1 else None
-    next_page = page + 1 if page + 1 <= total_pages else total_pages + 1
+    next_page = page + 1 if page + 1 <= total_pages else None
     result = {
         'page': page,
-        'page_size': per_page,
+        'page_size': len(items_on_page),
         'prev_page': prev_page,
         'next_page': next_page,
-        'items_on_page': items_on_page,
         'total_pages': total_pages,
         'custom_range': custom_range,
-        
+        'items_on_page': items_on_page,
+    }
+    return result
+
+def apiPagination(data, request):
+    '''paginate api result'''
+    page = request.args.get('page')
+    if page:
+        page = int(request.args.get('page'))
+    else:
+        page = 1
+    pagination = paginate(data, page)
+    result = {
+        'Page': pagination['page'],
+        'Page size': pagination['page_size'],
+        'Previous page': pagination['prev_page'],
+        'Next page': pagination['next_page'],
+        'Total pages': pagination['total_pages'],
+        'Data': pagination['items_on_page'],
+        'Go back to home': f'{domain}/api/v1'
     }
     return result

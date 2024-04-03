@@ -1,5 +1,6 @@
 '''handle project search'''
 from models.project import Project
+from models.user import Profile
 from models import storage
 
 
@@ -35,3 +36,17 @@ def project_search(searchQuery):
                         projects.append(project)
                         break
     return projects
+
+
+def profile_search(searchQuery):
+    '''profiles search'''
+    profiles = []
+    for profile in storage.all(Profile).values():
+                if (profile.name and searchQuery in profile.name.lower()) or (profile.bio and searchQuery in profile.bio.lower()):
+                        profiles.append(profile)
+                else:
+                    for skill in profile.skills:
+                        if searchQuery in skill.name.lower():
+                            profiles.append(profile)
+                            break
+    return profiles

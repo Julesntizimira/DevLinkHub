@@ -47,3 +47,13 @@ class Tag (BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes Tag instance"""
         super().__init__(*args, **kwargs)
+    
+    @property
+    def projects(self):
+        '''get projects related to this tag'''
+        from models import storage
+        projects = []
+        for project in storage.all(Project).values():
+            if self in project.tags:
+                projects.append(project)
+        return projects
